@@ -28,23 +28,23 @@ int leerNumeros(char *filename, int **vec) {
 
 long long leerTotal(int numeroHijos) {
     FILE *infile;
-    int numero;
+    long long numero;
     long long total = 0;
     infile = fopen("out.txt", "r");
     if (!infile) error("Error padre archivo resultados");
     for (int i = 0; i < numeroHijos; i++) {
-        fscanf(infile, "%d", &numero);
-        total += (long long) numero;
+        fscanf(infile, "%lld", &numero);
+        total += numero;
     }
     fclose(infile);
     return total;
 }
 
 int main() {
-    remove("out.txt"); // Eliminar el archivo si ya existe
+    remove("out.txt"); 
 
     int *vector;
-    int cantidadNumeros = leerNumeros("test2.in", &vector);
+    int cantidadNumeros = leerNumeros("test3.in", &vector);
     int i, j, nHijos;
 
     printf("Número de hijos a realizar la suma: ");
@@ -55,8 +55,9 @@ int main() {
     for (i = 0; i < nHijos; i++) {
         if (fork() == 0) {
             int inicio = delta * i;
-            int final = inicio + delta;
-            int acumulador = 0;
+            int final = (i == nHijos - 1)? cantidadNumeros: inicio + delta;
+            printf("Hijo %d: procesando de %d a %d\n", i, inicio, final - 1);
+            long long acumulador = 0;
 
             for (j = inicio; j < final; j++) {
                 acumulador += vector[j];
@@ -66,7 +67,7 @@ int main() {
             if (!text) {
                 error("Error al abrir out.txt");
             }
-            fprintf(text, "%d\n", acumulador);
+            fprintf(text, "%lld\n", acumulador);
             fclose(text);
             
             exit(0);
