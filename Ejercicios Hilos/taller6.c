@@ -78,7 +78,9 @@ int main(int argc, char const* argv[]) {
     for (int generacion = 1; generacion <= generaciones; generacion++) {
         pthread_barrier_wait(&barrera);
 
+        printf("|-------------------------------|\n");
         printf("Estamos en la generación n° %d\n", generacion);
+        printf("|-------------------------------|\n");
         qsort(individuos, cantidadIndividuos, sizeof(Individuo), intercambiarIndividuos);
 
         for (int j = 0; j < 10 && j < cantidadIndividuos; j++) {
